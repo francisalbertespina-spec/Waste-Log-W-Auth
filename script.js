@@ -21,15 +21,19 @@ window.onload = function () {
 // --- 2. GOOGLE LOGIN HANDLER ---
 function handleCredentialResponse(response) {
   const responsePayload = parseJwt(response.credential);
-
-  const loggedInEmail = responsePayload.email.toLowerCase();
-  // !!! IMPORTANT: Add your email to this list !!!
-  const authorizedUsers = ["efrancisalbert@gmail.com", "francisalbertespina@gmail.com", "sanpabloshan@gmail.com"];
   
-  if (authorizedUsers.includes(responsePayload.email)) {
-    currentUserEmail = responsePayload.email;
+  // FORCE EVERYTHING TO LOWERCASE TO AVOID ERRORS
+  const loggedInEmail = responsePayload.email.toLowerCase();
+  
+  const authorizedUsers = [
+    "efrancisalbert@gmail.com", 
+    "francisalbertespina@gmail.com", 
+    "sanpabloshan@gmail.com"
+  ];
+  
+  if (authorizedUsers.includes(loggedInEmail)) {
+    currentUserEmail = loggedInEmail;
     
-    // Switch visibility: Hide login, show form
     document.getElementById("login-section").style.display = "none";
     document.getElementById("form-section").style.display = "block";
     
@@ -37,7 +41,8 @@ function handleCredentialResponse(response) {
     statusText.innerText = "Welcome, " + responsePayload.name;
     statusText.style.color = "#2e7d32";
   } else {
-    alert("Unauthorized user: " + responsePayload.email + ". Access Denied.");
+    // This alert helps you see exactly what email is failing
+    alert("Access Denied for: " + loggedInEmail);
   }
 }
 
@@ -124,4 +129,5 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
+
 
