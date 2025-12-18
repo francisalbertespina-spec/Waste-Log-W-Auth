@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
   <title>Hazardous Waste Log</title>
   
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
+
   <style>
-    /* Mobile-First Design */
+    /* 2. THE CSS: This makes it look like a mobile app */
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f4f7f6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
       margin: 0;
       padding: 15px;
       display: flex;
@@ -21,11 +20,11 @@
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       background: white;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       box-sizing: border-box;
     }
 
@@ -33,67 +32,59 @@
       color: #d32f2f;
       text-align: center;
       margin-top: 0;
-      font-size: 1.4rem;
     }
 
-    /* Form Styling */
     label {
       display: block;
       margin-top: 15px;
       font-weight: 600;
+      color: #444;
       font-size: 14px;
-      color: #555;
     }
 
     input, select {
       width: 100%;
-      height: 48px; /* Finger-friendly height */
+      padding: 12px;
       margin-top: 5px;
-      padding: 0 12px;
       border: 1px solid #ddd;
-      border-radius: 10px;
+      border-radius: 8px;
       box-sizing: border-box;
-      font-size: 16px; /* Prevents iOS auto-zoom */
-      background-color: #fff;
+      font-size: 16px; /* Prevents auto-zoom on iPhone */
     }
 
     .button-group {
       margin-top: 25px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     button {
       width: 100%;
-      height: 52px;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-    }
-
-    button:active {
-      transform: scale(0.98);
+      transition: opacity 0.2s;
     }
 
     .btn-add { background-color: #d32f2f; color: white; }
-    .btn-export { background-color: #f0f0f0; color: #333; }
+    .btn-export { background-color: #1976d2; color: white; }
+    button:active { opacity: 0.8; }
 
-    /* Login and Section Toggle */
-    #login-section { text-align: center; padding: 40px 0; }
+    /* Login and form sections */
+    #login-section { text-align: center; padding: 40px 10px; }
     #form-section { display: none; }
     
     #status {
       text-align: center;
       font-size: 14px;
-      margin-top: 15px;
-      min-height: 20px;
+      margin-top: 10px;
+      font-weight: 500;
     }
 
-    /* Table Styling */
     .table-wrapper {
       margin-top: 30px;
       overflow-x: auto;
@@ -102,19 +93,19 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     th {
-      background-color: #fafafa;
+      background-color: #f8f9fa;
       text-align: left;
-      padding: 12px;
-      border-bottom: 2px solid #eee;
+      padding: 10px;
+      border-bottom: 2px solid #ddd;
     }
 
     td {
-      padding: 12px;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
     }
   </style>
 </head>
@@ -124,7 +115,7 @@
   <h2>Hazardous Waste Log</h2>
 
   <div id="login-section">
-    <p>Please sign in to access the Entry form.</p>
+    <p>Please sign in to access the Hazardous Waste Entry form.</p>
     <div style="display: flex; justify-content: center; padding: 20px;" id="buttonDiv"></div>
   </div>
 
