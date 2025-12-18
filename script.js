@@ -1,20 +1,20 @@
 let data = [];
 let currentUserEmail = "Guest";
 
-// Your Google Script URL
+// Your Google Script Deployment URL
 const scriptURL = "https://script.google.com/macros/s/AKfycbxTzFIX6K7a5L_qopkrjTGTvKv1pV6_TonqnfbUFtG6pWdFR7dsyhn82g6H-vYrhsvx/exec";
 
 // --- 1. INITIALIZE LOGIN ---
 window.onload = function () {
   google.accounts.id.initialize({
-    // YOUR CLIENT ID PLACED HERE
-    client_id: "684419504896-89pugd4fs862uek7ch9d4dop7veuknfv.apps.googleusercontent.com",
+    // Your specific Client ID
+    client_id: "684419504896-grfb9t1gdj7jfkdk2c6ns3aeptkbd17f.apps.googleusercontent.com",
     callback: handleCredentialResponse
   });
 
   google.accounts.id.renderButton(
     document.getElementById("buttonDiv"),
-    { theme: "outline", size: "large" } 
+    { theme: "outline", size: "large", width: "250" } 
   );
 };
 
@@ -22,21 +22,25 @@ window.onload = function () {
 function handleCredentialResponse(response) {
   const responsePayload = parseJwt(response.credential);
   
-  // ADD AUTHORIZED EMAILS HERE
-  const authorizedUsers = ["francisalbertespina@gmail.com", "sanpabloshan@gmail.com"];
+  // !!! IMPORTANT: Add your email to this list !!!
+  const authorizedUsers = ["efrancisalbert@gmail.com", "francisalbertespina@gmail.com", "sanpabloshan@gmail.com"];
   
   if (authorizedUsers.includes(responsePayload.email)) {
     currentUserEmail = responsePayload.email;
+    
+    // Switch visibility: Hide login, show form
     document.getElementById("login-section").style.display = "none";
     document.getElementById("form-section").style.display = "block";
-    document.getElementById("status").innerText = "Welcome, " + responsePayload.name;
-    document.getElementById("status").style.color = "#2e7d32";
+    
+    const statusText = document.getElementById("status");
+    statusText.innerText = "Welcome, " + responsePayload.name;
+    statusText.style.color = "#2e7d32";
   } else {
-    alert("Unauthorized user: " + responsePayload.email);
+    alert("Unauthorized user: " + responsePayload.email + ". Access Denied.");
   }
 }
 
-// Token parser
+// Token parser (converts Google login data into a readable name/email)
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -68,6 +72,7 @@ async function addEntry() {
   statusText.innerText = "Syncing with Google Sheets...";
   statusText.style.color = "#1976d2";
 
+  // Send to Google Sheets
   fetch(scriptURL, {
     method: 'POST',
     mode: 'no-cors', 
@@ -85,6 +90,7 @@ async function addEntry() {
     console.error("Error!", error.message);
   });
 
+  // Update table
   data.push(rowData);
   const tbody = document.querySelector("#table tbody");
   const row = tbody.insertRow(0);
@@ -92,6 +98,7 @@ async function addEntry() {
   row.insertCell(1).innerText = volume;
   row.insertCell(2).innerText = waste;
 
+  // Clear inputs
   document.getElementById("date").value = "";
   document.getElementById("volume").value = "";
   document.getElementById("waste").value = "";
@@ -116,5 +123,3 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
-
-
