@@ -2,7 +2,7 @@ let data = [];
 let currentUserEmail = "Guest";
 
 // Your Google Script Deployment URL
-const scriptURL = "https://script.google.com/macros/s/AKfycbxTzFIX6K7a5L_qopkrjTGTvKv1pV6_TonqnfbUFtG6pWdFR7dsyhn82g6H-vYrhsvx/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzZpJO0yqRe_YAbX-yOii34PK4yLCKq3Lv2lF1twDBzI-fGwUIuRkXzUCYSiXKxeF5w/exec";
 
 // --- 1. INITIALIZE LOGIN ---
 window.onload = function () {
@@ -129,6 +129,7 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
+
 
 
 
