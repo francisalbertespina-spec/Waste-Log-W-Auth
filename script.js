@@ -1,13 +1,13 @@
 let data = [];
-let currentUserEmail = "Guest";
+let currentUserEmail = "";
 
-// Your Google Script Deployment URL
+// REPLACE with your NEW Google Web App URL from Deployment
 const scriptURL = "https://script.google.com/macros/s/AKfycbzZpJO0yqRe_YAbX-yOii34PK4yLCKq3Lv2lF1twDBzI-fGwUIuRkXzUCYSiXKxeF5w/exec";
 
 // --- 1. INITIALIZE LOGIN ---
 window.onload = function () {
   google.accounts.id.initialize({
-    // Your specific Client ID
+    // REPLACE with your NEW Client ID
     client_id: "684419504896-89pugd4fs862uek7ch9d4dop7veuknfv.apps.googleusercontent.com",
     callback: handleCredentialResponse
   });
@@ -21,8 +21,6 @@ window.onload = function () {
 // --- 2. GOOGLE LOGIN HANDLER ---
 function handleCredentialResponse(response) {
   const responsePayload = parseJwt(response.credential);
-  
-  // FORCE EVERYTHING TO LOWERCASE TO AVOID ERRORS
   const loggedInEmail = responsePayload.email.toLowerCase();
   
   const authorizedUsers = [
@@ -41,12 +39,10 @@ function handleCredentialResponse(response) {
     statusText.innerText = "Welcome, " + responsePayload.name;
     statusText.style.color = "#2e7d32";
   } else {
-    // This alert helps you see exactly what email is failing
     alert("Access Denied for: " + loggedInEmail);
   }
 }
 
-// Token parser (converts Google login data into a readable name/email)
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -75,10 +71,10 @@ async function addEntry() {
     userEmail: currentUserEmail 
   };
 
-  statusText.innerText = "Syncing with Google Sheets...";
+  statusText.innerText = "Syncing with Cloud...";
   statusText.style.color = "#1976d2";
 
-  // Send to Google Sheets
+  // POST to Google Sheet
   fetch(scriptURL, {
     method: 'POST',
     mode: 'no-cors', 
@@ -87,16 +83,15 @@ async function addEntry() {
     body: JSON.stringify(rowData)
   })
   .then(() => {
-    statusText.innerText = "✅ Successfully saved to Cloud";
+    statusText.innerText = "✅ Saved to Google Sheets";
     statusText.style.color = "#2e7d32";
-    setTimeout(() => { statusText.innerText = "Logged in as: " + currentUserEmail; }, 3000);
   })
   .catch(error => {
     statusText.innerText = "❌ Sync Error";
     console.error("Error!", error.message);
   });
 
-  // Update table
+  // Update local table UI
   data.push(rowData);
   const tbody = document.querySelector("#table tbody");
   const row = tbody.insertRow(0);
@@ -105,7 +100,6 @@ async function addEntry() {
   row.insertCell(2).innerText = waste;
 
   // Clear inputs
-  document.getElementById("date").value = "";
   document.getElementById("volume").value = "";
   document.getElementById("waste").value = "";
 }
@@ -113,7 +107,7 @@ async function addEntry() {
 // --- 4. EXPORT HANDLER ---
 function exportExcel() {
   if (data.length === 0) {
-    alert("No data to export!");
+    alert("No data in current session!");
     return;
   }
   let csv = "Date,Volume (kg),Waste Name,Logged By\n";
@@ -129,9 +123,3 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
-
-
-
-
-
-
