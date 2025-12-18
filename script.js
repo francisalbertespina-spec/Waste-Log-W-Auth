@@ -21,7 +21,8 @@ window.onload = function () {
 // --- 2. GOOGLE LOGIN HANDLER ---
 function handleCredentialResponse(response) {
   const responsePayload = parseJwt(response.credential);
-  
+
+  const loggedInEmail = responsePayload.email.toLowerCase();
   // !!! IMPORTANT: Add your email to this list !!!
   const authorizedUsers = ["efrancisalbert@gmail.com", "francisalbertespina@gmail.com", "sanpabloshan@gmail.com"];
   
@@ -123,3 +124,4 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
+
