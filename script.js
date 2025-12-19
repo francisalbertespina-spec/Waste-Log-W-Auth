@@ -25,7 +25,7 @@ function handleCredentialResponse(response) {
   const authorizedUsers = [
     "efrancisalbert@gmail.com", 
     "francisalbertespina@gmail.com", 
-    "sanpabloshan@gmail.com"
+    "sanpabloshan@gmail.com",
     "hdjvemu2026@gmail.com"
   ];
   
@@ -153,4 +153,3 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
-
