@@ -7,7 +7,6 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzfEwXSA8_ckMKa95ySIK
 // --- 1. INITIALIZE LOGIN ---
 window.onload = function () {
   google.accounts.id.initialize({
-    // REPLACE with your NEW Client ID
     client_id: "648943267004-cgsr4bhegtmma2jmlsekjtt494j8cl7f.apps.googleusercontent.com",
     callback: handleCredentialResponse
   });
@@ -31,7 +30,6 @@ function handleCredentialResponse(response) {
   
   if (authorizedUsers.includes(loggedInEmail)) {
     currentUserEmail = loggedInEmail;
-    
     document.getElementById("login-section").style.display = "none";
     document.getElementById("form-section").style.display = "block";
     
@@ -52,38 +50,39 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
+// --- 3. PHOTO PREVIEW ---
 function previewImage(event) {
-  const reader = new FileReader();
-  reader.onload = function() {
-    const output = document.getElementById('outputPreview');
-    const container = document.getElementById('imagePreviewContainer');
-    output.src = reader.result;
-    container.style.display = 'block';
+  if (event.target.files && event.target.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      const output = document.getElementById('outputPreview');
+      const container = document.getElementById('imagePreviewContainer');
+      output.src = reader.result;
+      container.style.display = 'block';
+    }
+    reader.readAsDataURL(event.target.files[0]);
   }
-  reader.readAsDataURL(event.target.files[0]);
 }
 
-// --- 3. DATA ENTRY HANDLER ---
+// --- 4. DATA ENTRY HANDLER ---
 async function addEntry() {
   const fileInput = document.getElementById("photo");
   const statusText = document.getElementById("status");
-  const file = fileInput.files[0];
-  let fileData = null;
-
-  // Validation
   const date = document.getElementById("date").value;
   const volume = document.getElementById("volume").value;
   const waste = document.getElementById("waste").value;
+  
+  const file = fileInput.files[0];
+  let fileData = null;
 
   if (!date || !volume || !waste) {
     alert("Please complete all fields");
     return;
   }
 
-  statusText.innerText = "Processing image...";
+  statusText.innerText = "Processing entry...";
   statusText.style.color = "#1976d2";
 
-  // Convert image to Base64 string if a file exists
   if (file) {
     fileData = await new Promise((resolve) => {
       const reader = new FileReader();
@@ -101,7 +100,7 @@ async function addEntry() {
     imageName: file ? `Waste_${Date.now()}.png` : null
   };
 
-  statusText.innerText = "Syncing with Cloud (Uploading Image)...";
+  statusText.innerText = "Syncing with Cloud...";
 
   fetch(scriptURL, {
     method: 'POST',
@@ -113,7 +112,18 @@ async function addEntry() {
   .then(() => {
     statusText.innerText = "✅ Saved successfully!";
     statusText.style.color = "#2e7d32";
-    // Reset form and preview
+    
+    // Update local table UI
+    data.push(rowData);
+    const tbody = document.querySelector("#table tbody");
+    const row = tbody.insertRow(0);
+    row.insertCell(0).innerText = date;
+    row.insertCell(1).innerText = volume;
+    row.insertCell(2).innerText = waste;
+
+    // Reset fields
+    document.getElementById("volume").value = "";
+    document.getElementById("waste").value = "";
     document.getElementById("photo").value = "";
     document.getElementById("imagePreviewContainer").style.display = "none";
   })
@@ -123,20 +133,7 @@ async function addEntry() {
   });
 }
 
-  // Update local table UI
-  data.push(rowData);
-  const tbody = document.querySelector("#table tbody");
-  const row = tbody.insertRow(0);
-  row.insertCell(0).innerText = date;
-  row.insertCell(1).innerText = volume;
-  row.insertCell(2).innerText = waste;
-
-  // Clear inputs
-  document.getElementById("volume").value = "";
-  document.getElementById("waste").value = "";
-}
-
-// --- 4. EXPORT HANDLER ---
+// --- 5. EXPORT HANDLER ---
 function exportExcel() {
   if (data.length === 0) {
     alert("No data in current session!");
@@ -155,6 +152,3 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
-
-
-
