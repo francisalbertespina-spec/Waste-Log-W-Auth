@@ -158,6 +158,13 @@
       <option value="Containers Previously containing toxic chemical substances">Containers Previously containing toxic chemical substances</option>
     </select>
 
+    <label for="photo">Photo Proof (Optional):</label>
+<input type="file" id="photo" accept="image/*" capture="environment" onchange="previewImage(event)">
+
+<div id="imagePreviewContainer" style="display:none; margin-top: 10px; text-align: center;">
+  <img id="outputPreview" style="max-width: 100%; border-radius: 10px; border: 1px solid #ddd;">
+</div>
+
     <div class="button-group">
       <button class="btn-add" onclick="addEntry()">Add Entry</button>
       <button class="btn-export" onclick="exportExcel()">Export to Excel (CSV)</button>
@@ -187,3 +194,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+
