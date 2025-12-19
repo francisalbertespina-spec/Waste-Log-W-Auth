@@ -26,6 +26,7 @@ function handleCredentialResponse(response) {
     "efrancisalbert@gmail.com", 
     "francisalbertespina@gmail.com", 
     "sanpabloshan@gmail.com"
+    "hdjvemu2026@gmail.com"
   ];
   
   if (authorizedUsers.includes(loggedInEmail)) {
@@ -152,3 +153,4 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
+
