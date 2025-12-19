@@ -8,7 +8,6 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   
   <style>
-    /* Mobile-First Theme */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f4f7f6;
@@ -29,102 +28,44 @@
       box-sizing: border-box;
     }
 
-    h2 {
-      color: #d32f2f;
-      text-align: center;
-      margin-top: 0;
-      font-size: 1.4rem;
-    }
+    h2 { color: #d32f2f; text-align: center; margin-top: 0; font-size: 1.4rem; }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-      font-size: 14px;
-      color: #555;
-    }
+    label { display: block; margin-top: 15px; font-weight: 600; font-size: 14px; color: #555; }
 
     input, select {
-      width: 100%;
-      height: 48px;
-      margin-top: 5px;
-      padding: 0 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-sizing: border-box;
-      font-size: 16px;
-      background-color: #fff;
+      width: 100%; height: 48px; margin-top: 5px; padding: 0 12px;
+      border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box;
+      font-size: 16px; background-color: #fff;
     }
 
-    .button-group {
-      margin-top: 25px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .button-group { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; }
 
     button {
-      width: 100%;
-      height: 52px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.1s;
+      width: 100%; height: 52px; border: none; border-radius: 10px;
+      font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.1s;
     }
 
     button:active { transform: scale(0.98); }
-
     .btn-add { background-color: #d32f2f; color: white; }
     .btn-export { background-color: #f0f0f0; color: #333; }
 
     #login-section { text-align: center; padding: 40px 0; }
     #form-section { display: none; }
-    
-    #status {
-      text-align: center;
-      font-size: 13px;
-      margin-top: 15px;
-      font-weight: 500;
-    }
+    #status { text-align: center; font-size: 13px; margin-top: 15px; font-weight: 500; }
 
-    .table-wrapper {
-      margin-top: 30px;
-      overflow-x: auto;
-    }
+    .table-wrapper { margin-top: 30px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background-color: #fafafa; text-align: left; padding: 12px; border-bottom: 2px solid #eee; }
+    td { padding: 12px; border-bottom: 1px solid #f0f0f0; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    th {
-      background-color: #fafafa;
-      text-align: left;
-      padding: 12px;
-      border-bottom: 2px solid #eee;
-    }
-
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    /* Watermark Styling */
     .watermark {
-      text-align: center;
-      font-size: 11px;
-      color: #bbb;
-      margin-top: 30px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      text-align: center; font-size: 11px; color: #bbb;
+      margin-top: 30px; letter-spacing: 1px; text-transform: uppercase;
     }
-
-    .author-name {
-      font-weight: bold;
-      color: #999;
+    .author-name { font-weight: bold; color: #999; }
+    
+    #imagePreviewContainer img {
+      max-width: 100%; border-radius: 10px; border: 1px solid #ddd;
     }
   </style>
 </head>
@@ -135,7 +76,7 @@
 
   <div id="login-section">
     <p>Please sign in to access the Entry form.</p>
-    <div style="display: flex; justify-content: center; padding: 20px;" id="buttonDiv"></div>
+    <div id="buttonDiv" style="display: flex; justify-content: center; padding: 20px;"></div>
   </div>
 
   <div id="form-section">
@@ -159,11 +100,11 @@
     </select>
 
     <label for="photo">Photo Proof (Optional):</label>
-<input type="file" id="photo" accept="image/*" capture="environment" onchange="previewImage(event)">
+    <input type="file" id="photo" accept="image/*" capture="environment" onchange="previewImage(event)">
 
-<div id="imagePreviewContainer" style="display:none; margin-top: 10px; text-align: center;">
-  <img id="outputPreview" style="max-width: 100%; border-radius: 10px; border: 1px solid #ddd;">
-</div>
+    <div id="imagePreviewContainer" style="display:none; margin-top: 10px; text-align: center;">
+      <img id="outputPreview" alt="Preview">
+    </div>
 
     <div class="button-group">
       <button class="btn-add" onclick="addEntry()">Add Entry</button>
@@ -194,4 +135,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
