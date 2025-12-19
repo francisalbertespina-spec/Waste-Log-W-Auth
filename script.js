@@ -52,29 +52,57 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
+function previewImage(event) {
+  const reader = new FileReader();
+  reader.onload = function() {
+    const output = document.getElementById('outputPreview');
+    const container = document.getElementById('imagePreviewContainer');
+    output.src = reader.result;
+    container.style.display = 'block';
+  }
+  reader.readAsDataURL(event.target.files[0]);
+}
+
 // --- 3. DATA ENTRY HANDLER ---
 async function addEntry() {
+  const fileInput = document.getElementById("photo");
+  const statusText = document.getElementById("status");
+  const file = fileInput.files[0];
+  let fileData = null;
+
+  // Validation
   const date = document.getElementById("date").value;
   const volume = document.getElementById("volume").value;
   const waste = document.getElementById("waste").value;
-  const statusText = document.getElementById("status");
 
   if (!date || !volume || !waste) {
     alert("Please complete all fields");
     return;
   }
 
+  statusText.innerText = "Processing image...";
+  statusText.style.color = "#1976d2";
+
+  // Convert image to Base64 string if a file exists
+  if (file) {
+    fileData = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result.split(",")[1]);
+      reader.readAsDataURL(file);
+    });
+  }
+
   const rowData = {
     date: date,
     volume: volume,
     waste: waste,
-    userEmail: currentUserEmail 
+    userEmail: currentUserEmail,
+    imageByte: fileData, 
+    imageName: file ? `Waste_${Date.now()}.png` : null
   };
 
-  statusText.innerText = "Syncing with Cloud...";
-  statusText.style.color = "#1976d2";
+  statusText.innerText = "Syncing with Cloud (Uploading Image)...";
 
-  // POST to Google Sheet
   fetch(scriptURL, {
     method: 'POST',
     mode: 'no-cors', 
@@ -83,13 +111,17 @@ async function addEntry() {
     body: JSON.stringify(rowData)
   })
   .then(() => {
-    statusText.innerText = "✅ Saved to Google Sheets";
+    statusText.innerText = "✅ Saved successfully!";
     statusText.style.color = "#2e7d32";
+    // Reset form and preview
+    document.getElementById("photo").value = "";
+    document.getElementById("imagePreviewContainer").style.display = "none";
   })
   .catch(error => {
-    statusText.innerText = "❌ Sync Error";
-    console.error("Error!", error.message);
+    statusText.innerText = "❌ Error uploading";
+    console.error(error);
   });
+}
 
   // Update local table UI
   data.push(rowData);
@@ -123,3 +155,4 @@ function exportExcel() {
   a.click();
   document.body.removeChild(a);
 }
+
